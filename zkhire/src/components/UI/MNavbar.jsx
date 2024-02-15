@@ -1,6 +1,6 @@
 import {
-  Navbar, NavbarBrand,
-  NavbarContent, NavbarItem
+  Navbar,
+  NavbarBrand, NavbarContent, NavbarItem,
 } from "@nextui-org/react";
 import { Outlet } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';

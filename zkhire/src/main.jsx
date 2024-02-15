@@ -39,11 +39,11 @@ const config = createConfig({
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-      <WagmiConfig config={config}>
-        <RainbowKitProvider chains={chains}>
-          <NextUIProvider>
+      <NextUIProvider>
+        <WagmiConfig config={config}>
+          <RainbowKitProvider chains={chains}>
             <App />
-            {/* <ToastContainer
+            <ToastContainer
               position="top-center"
               autoClose={5000}
               hideProgressBar={false}
@@ -53,9 +53,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               pauseOnFocusLoss
               draggable
               pauseOnHover
-              theme="dark"/>       */}
-          </NextUIProvider>
-        </RainbowKitProvider>
-      </WagmiConfig>
+              theme="dark"/>      
+          </RainbowKitProvider> 
+        </WagmiConfig>
+      </NextUIProvider>
     </React.StrictMode>,
 );

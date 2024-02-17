@@ -8,8 +8,8 @@ import { sepolia, scrollSepolia } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import { ToastContainer } from "react-toastify";
 import "@rainbow-me/rainbowkit/styles.css";
+import "react-toastify/dist/ReactToastify.css";
 
 import App from './App'
 import './index.css'
@@ -39,23 +39,12 @@ const config = createConfig({
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-      <NextUIProvider>
-        <WagmiConfig config={config}>
-          <RainbowKitProvider chains={chains}>
-            <App />
-            <ToastContainer
-              position="top-center"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="dark"/>      
-          </RainbowKitProvider> 
-        </WagmiConfig>
-      </NextUIProvider>
+      <WagmiConfig config={config}>
+        <RainbowKitProvider chains={chains}>
+            <NextUIProvider>
+              <App />
+            </NextUIProvider>
+        </RainbowKitProvider> 
+      </WagmiConfig>
     </React.StrictMode>,
 );

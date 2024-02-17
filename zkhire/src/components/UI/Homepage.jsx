@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 function HomePage() {
     const navigate = useNavigate();
   return (  
-    <div className='mt-4 p-1'>
+    <div className='mt-4'>
       <h3>Welcome to ZkHire</h3>  
-      <h3>A Zero-Knowledge Hiring platform that allows recruiters to find employees based purely on skill and no referral and allow People to get jobs based solely on their skills without any discrimination.</h3>
+      <h3>A Zero-Knowledge Hiring platform that allows recruiters to find employees based purely on skill and no referral.<br/> Allowing People to get jobs based solely on their skills without any discrimination.</h3>
       <hr/>
       <h3>For Users</h3>
       <h4>Get jobs based solely on their skills</h4>

@@ -1,0 +1,35 @@
+[{
+    "company_name": "TechSolutions Inc.",
+    "established": "2005-10-15",
+    "industry": "Information Technology",
+    "avg_employee": 1200,
+    "jobs_available": 15
+  },
+  {
+    "company_name": "CodeCrafters Ltd.",
+    "established": "2010-05-22",
+    "industry": "Software Development",
+    "avg_employee": 800,
+    "jobs_available": 8
+  },
+  {
+    "company_name": "DataInnovators Pvt. Ltd.",
+    "established": "2018-03-08",
+    "industry": "Data Science",
+    "avg_employee": 500,
+    "jobs_available": 10
+  },
+  {
+    "company_name": "CyberSec Solutions",
+    "established": "2000-12-01",
+    "industry": "Cybersecurity",
+    "avg_employee": 1500,
+    "jobs_available": 20
+  },
+  {
+    "company_name": "CloudNinjas Tech",
+    "established": "2015-07-11",
+    "industry": "Cloud Computing",
+    "avg_employee": 300,
+    "jobs_available": 5
+  }]

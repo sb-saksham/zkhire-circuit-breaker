@@ -1,0 +1,44 @@
+[
+    {
+      "company_name": "TechSolutions Inc.",
+      "job_title": "Software Engineer",
+      "compensation_salary": "$90,000",
+      "joining_date": "2023-01-10",
+      "test_type": "both",
+      "minimum_marks_assessment_test": 70,
+      "minimum_test_cases_coding_to_pass": 5
+    },
+    {
+      "company_name": "CodeCrafters Ltd.",
+      "job_title": "Full Stack Developer",
+      "compensation_salary": "$80,000",
+      "joining_date": "2023-02-15",
+      "test_type": "assessment",
+      "minimum_marks_assessment_test": 80
+    },
+    {
+      "company_name": "DataInnovators Pvt. Ltd.",
+      "job_title": "Data Scientist",
+      "compensation_salary": "$70,000",
+      "joining_date": "2023-03-20",
+      "test_type": "coding",
+      "minimum_test_cases_coding_to_pass": 7
+    },
+    {
+      "company_name": "CyberSec Solutions",
+      "job_title": "Cybersecurity Analyst",
+      "compensation_salary": "$95,000",
+      "joining_date": "2023-04-25",
+      "test_type": "both",
+      "minimum_marks_assessment_test": 75,
+      "minimum_test_cases_coding_to_pass": 6
+    },
+    {
+      "company_name": "CloudNinjas Tech",
+      "job_title": "Cloud Solutions Architect",
+      "compensation_salary": "$85,000",
+      "joining_date": "2023-05-30",
+      "test_type": "assessment",
+      "minimum_marks_assessment_test": 85
+    }
+  ]

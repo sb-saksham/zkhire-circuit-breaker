@@ -37,6 +37,7 @@ contract ZKHiring {
         string jobId;
         bool accepted;
         bytes proof;
+        bytes32[] publicInputs;
     }
 
     // Mapping of company addresses to company information
@@ -136,22 +137,36 @@ contract ZKHiring {
         emit JobOffered(company, jobs[jobId].title, _proof, msg.sender);
     }
 
-    //Reading Utils
-    function returnJobDetails(
+    function verifyApplicant(
+        address applier,
         string memory jobId
-    ) public view returns (JobDetails memory) {
-        return jobs[jobId];
+    ) public view returns (bool) {
+        require(
+            jobs[jobId].company == msg.sender,
+            "Only Companies could verify proofs of their aplliers!"
+        );
+        return
+            ultraVerifier.verify(
+                applicationAccepted[applier].proof,
+                applicationAccepted[applier].publicInputs
+            );
     }
 
-    // Function to loop through all JobDetails
-    function getAllJobDetails() external view returns (JobDetails[] memory) {
+    struct allJobsReturn {
+        string jobId;
+        JobDetails jd;
+    }
+
+    // Function to loop through all JobDetails objs
+    function getAllJobDetails() external view returns (allJobsReturn[] memory) {
         uint256 totalJobs = allJobIds.length;
-        JobDetails[] memory allJobDetails = new JobDetails[](totalJobs);
+        allJobsReturn[] memory allJobDetails = new allJobsReturn[](totalJobs);
 
         // Retrieve job details
         for (uint256 i = 0; i < totalJobs; i++) {
             string memory jobId = allJobIds[i];
-            allJobDetails[i] = jobs[jobId];
+            allJobDetails[i].jd = jobs[jobId];
+            allJobDetails[i].jobId = jobId;
         }
 
         return allJobDetails;

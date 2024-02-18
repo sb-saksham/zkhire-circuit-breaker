@@ -1,21 +1,19 @@
 import {
     Table, TableHeader, TableColumn,
-    TableBody, TableRow, TableCell
+    TableBody, TableRow, TableCell, Button
 } from "@nextui-org/react";
 
-import { useAccount, useContractRead } from "wagmi";
+import { useContractRead } from "wagmi";
 import { useNavigate } from "react-router";
 // import 
-import { contractDetails } from "../utils/general";
+import { contractDetails, ASSESSMENT_TYPES } from "../utils/general";
 
 function CompanyJobs() {
     const navigate = useNavigate();
-    const { address: companyAddress } = useAccount();
-    const { data: companyJobs, error: companyJobsError } = 
+    const { data: companyJobsDt, success: fetchSuccess, error: fetchError } = 
         useContractRead({
             ...contractDetails,
-            functionName: "",
-            arguments: [companyAddress]
+            functionName: "getAllJobDetails",
         });
     return (
     <>      
@@ -26,11 +24,13 @@ function CompanyJobs() {
                 <TableColumn>ROLE</TableColumn>
                 <TableColumn>COMPENSATION/SALARY</TableColumn>
                 <TableColumn>CURRENT OPENINGS</TableColumn>
+                <TableColumn>ASSESSMENT TYPE</TableColumn>
+                <TableColumn>APPLY</TableColumn>
             </TableHeader>
             <TableBody>    
-                {companyJobs.forEach((comp, i) => {
+                {companyJobsDt.forEach((comp, i) => {
                     return (
-                        <TableRow key={i}>
+                    <TableRow key={i}>
                         <TableCell>{comp.jd.name}</TableCell>
                         <TableCell>{comp.jd.title}</TableCell>
                         <TableCell>{comp.jd.salary}</TableCell>

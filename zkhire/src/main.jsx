@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { NextUIProvider } from '@nextui-org/react';
+
 // WAGMI Libraries
 import { WagmiConfig } from "wagmi"
 import { createConfig, configureChains } from "wagmi";
@@ -11,9 +12,9 @@ import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import "@rainbow-me/rainbowkit/styles.css";
 import "react-toastify/dist/ReactToastify.css";
 
+import { AssessmentProvider } from './context/AssessmentContext';
 import App from './App'
 import './index.css'
-// import Web3AuthConnectorInstance from "./Web3AuthConnectorInstance";
 
 // Configure chains & providers with the Public provider.
 const { chains, publicClient, webSocketPublicClient } = configureChains([
@@ -42,7 +43,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <WagmiConfig config={config}>
         <RainbowKitProvider chains={chains}>
             <NextUIProvider>
-              <App />
+              <AssessmentProvider>
+                <App />
+              </AssessmentProvider>
             </NextUIProvider>
         </RainbowKitProvider> 
       </WagmiConfig>

@@ -34,7 +34,7 @@ function MNavbar() {
           {isConnected ? <ConnectButton /> : null}
         </div>
       </div>
-      <div className="text-center">
+      <div className="text-center mt-10">
         <div className="columns-1">
           <Outlet />
           <ToastContainer

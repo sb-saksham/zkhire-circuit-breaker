@@ -1,15 +1,30 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
+interface IUltraVerifier {
+    function verify(
+        bytes calldata _proof,
+        bytes32[] calldata _publicInputs
+    ) external view returns (bool);
+}
+
 contract ZKHiring {
+    IUltraVerifier ultraVerifier;
+
+    constructor(address verifierAddress) {
+        ultraVerifier = IUltraVerifier(verifierAddress);
+    }
+
     struct JobApplication {
         address applier;
-        bytes32 proof;
+        bytes proof;
     }
     struct JobDetails {
+        address company;
         string title;
-        uint256 compensation;
+        string compensation;
         uint256 openings;
+        uint8 assessmentType;
     }
 
     struct Company {
@@ -21,24 +36,31 @@ contract ZKHiring {
     struct Application {
         string jobId;
         bool accepted;
-        bytes32[] proof;
+        bytes proof;
     }
 
     // Mapping of company addresses to company information
     mapping(address => Company) public companies;
+    // companies open job postings mapping
+    mapping(address => string[]) public companyOpenJobs;
 
     // company jobs openings(jobId to JobDetails)
     mapping(string => JobDetails) public jobs;
 
-    // jobs applications for post(jobId to applications)
-    mapping(string => JobApplication) public applications;
+    // Array to store all jobIds for iteration
+    string[] public allJobIds;
 
+    // jobs applications for post(jobId to applications)
+    mapping(string => JobApplication[]) public applications;
+
+    // employer to applications accespeted
     mapping(address => Application) public applicationAccepted;
+
     // Event emitted when a job is offered
     event JobOffered(
         address indexed company,
         string indexed jobTitle,
-        bytes32[] proof,
+        bytes proof,
         address indexed applier
     );
 
@@ -63,17 +85,16 @@ contract ZKHiring {
         cmp.employees = employees;
     }
 
-    // Function to add a job to a company with a Merkle root
+    // Function to add a job to a company
     function addJob(
-        address company,
         string memory title,
-        uint256 compensation,
+        string memory compensation,
         uint256 openings,
-        string memory jobId
+        string memory jobId,
+        uint8 assessmentType
     ) public {
-        require(msg.sender == company, "Only the company can add jobs.");
         require(
-            bytes(companies[company].name).length != 0,
+            bytes(companies[msg.sender].name).length != 0,
             "Company not registered"
         );
         require(
@@ -81,17 +102,74 @@ contract ZKHiring {
             "Job with this ID already exists!"
         );
         JobDetails storage jd = jobs[jobId];
+        jd.company = msg.sender;
         jd.title = title;
         jd.compensation = compensation;
         jd.openings = openings;
+        jd.assessmentType = assessmentType;
+        companyOpenJobs[msg.sender].push(jobId);
+        allJobIds.push(jobId);
     }
 
     // Function for a student to apply for a job with a zero-knowledge proof
     function applyForJob(
         address company,
-        string memory jobTitle,
-        bytes32[] calldata proof
+        string memory jobId,
+        bytes calldata _proof,
+        bytes32[] calldata _publicInputs
     ) external {
-        emit JobOffered(company, jobTitle, proof, msg.sender);
+        require(msg.sender != company, "Company cannot apply!");
+        require(
+            ultraVerifier.verify(_proof, _publicInputs),
+            "Proof is not Valid!"
+        );
+        require(jobs[jobId].openings > 1, "No openings available!");
+        JobDetails storage jd = jobs[jobId];
+        jd.openings -= 1;
+        JobApplication storage ja = applications[jobId].push();
+        ja.applier = msg.sender;
+        ja.proof = _proof;
+        Application storage app = applicationAccepted[msg.sender];
+        app.accepted = true;
+        app.jobId = jobId;
+        app.proof = _proof;
+        emit JobOffered(company, jobs[jobId].title, _proof, msg.sender);
+    }
+
+    //Reading Utils
+    function returnJobDetails(
+        string memory jobId
+    ) public view returns (JobDetails memory) {
+        return jobs[jobId];
+    }
+
+    // Function to loop through all JobDetails
+    function getAllJobDetails() external view returns (JobDetails[] memory) {
+        uint256 totalJobs = allJobIds.length;
+        JobDetails[] memory allJobDetails = new JobDetails[](totalJobs);
+
+        // Retrieve job details
+        for (uint256 i = 0; i < totalJobs; i++) {
+            string memory jobId = allJobIds[i];
+            allJobDetails[i] = jobs[jobId];
+        }
+
+        return allJobDetails;
+    }
+
+    // Function to loop through all Companny open jobs
+    function getAllCompanyJobs(
+        address companyAddress
+    ) external view returns (JobDetails[] memory) {
+        uint256 totalJobs = companyOpenJobs[companyAddress].length;
+        JobDetails[] memory allCompanyJob = new JobDetails[](totalJobs);
+
+        // Retrieve job details
+        for (uint256 i = 0; i < totalJobs; i++) {
+            string memory jobId = companyOpenJobs[msg.sender][i];
+            allCompanyJob[i] = jobs[jobId];
+        }
+
+        return allCompanyJob;
     }
 }

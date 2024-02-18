@@ -26,7 +26,7 @@ return (
         <Input type="text" variant="underlined" label="Job Title" />
         <Input type="text" variant="underlined" label="Salary/Compensation" />    
         <Input type="number" variant="underlined" label="Openings Available" />
-        <RadioGroup label="Select Assessment Type">
+        <RadioGroup label="Select Assessment Type" style={{textAlign: "left"}}>
             <Radio value="coding" description="A coding test with 1 problem, whose code candidate have to write">
                 Coding
             </Radio>
@@ -36,7 +36,9 @@ return (
             <Radio value="both" description="Candidate need to appear for both Coding and Assessment">
                 Both
             </Radio>
-        </RadioGroup>
+            </RadioGroup>
+            <br/>
+            <hr/>
             {postJobPrepError && (<h4>An Error occurred! {postJobPrepError}</h4>)}    
         <Button color="primary" variant="shadow" disabled={postJobWrite} type="submit"></Button>
     </form>

@@ -6,8 +6,9 @@ import LogInPage from "./components/auth/LogInPage";
 import MNavbar from "./components/UI/MNavbar";
 import HomePage from "./components/UI/Homepage";
 import Error404Page from "./components/UI/Error404Page";
+import CompanyJobs from "./components/CompanyJobs";
 import PostJob from "./components/PostJob";
-import Landing from "./components/codeEditor/Landing";
+import Landing from "./components/codeEditor/CodeEditor";
 import AssessmentTest from "./components/AssessmentTest";
 
 function App() {
@@ -27,12 +28,11 @@ function App() {
                         </RequireAuth>} />          
                     {/* </Route>  */}
                 </Route>
-                <Route path="post/" element={<RequireAuth>
-                    <PostJob />
-                </RequireAuth>} />
-                {/* <Route path="company/" element={<RequireAuth>
-                    <CompanyJobs />
-                </RequireAuth>} /> */}
+                <Route path="company/" element={<RequireAuth><CompanyJobs /></RequireAuth>}>
+                    <Route path="post/" element={<RequireAuth>
+                        <PostJob />
+                    </RequireAuth>} />        
+                </Route>
             </Route>
             <Route path='/auth/' element={<LogInPage />} />
           </Route>

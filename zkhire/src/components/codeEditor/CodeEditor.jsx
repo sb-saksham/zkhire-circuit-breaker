@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import CodeEditorWindow from "./CodeEditorWindow";
+import CodeEditorWindow from "./CodeEditorWindow.jsx";
 import axios from "axios";
 import { classnames } from "../../utils/general.js";
-import { languageOptions } from "../../constants/languageOptions";
+import { languageOptions } from "../../constants/languageOptions.js";
 
-import useKeyPress from "../../hooks/useKeyPress";
-import OutputWindow from "./OutputWindow";
-import CustomInput from "./CustomInput";
-import OutputDetails from "./OutputDetails";
-import LanguagesDropdown from "./LanguagesDropdown";
+import { useAssessmentContext } from "../../context/AssessmentContext.jsx";
+import useKeyPress from "../../hooks/useKeyPress.js";
+import OutputWindow from "./OutputWindow.jsx";
+import CustomInput from "./CustomInput.jsx";
+import OutputDetails from "./OutputDetails.jsx";
+import LanguagesDropdown from "./LanguagesDropdown.jsx";
 
 const javascriptDefault = `/**
 * Problem: Binary Search: Search a sorted array for a target value.
@@ -47,10 +48,15 @@ const Landing = ({jobId}) => {
   const [processing, setProcessing] = useState(null);
   const [theme, setTheme] = useState("cobalt");
   const [language, setLanguage] = useState(languageOptions[0]);
-  // const JobDetails = ;
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
-
+  const { coding, setCoding } = useAssessmentContext();
+  useEffect(() => {
+    if (outputDetails) {
+      console.log(coding);
+      console.log(outputDetails);
+    }
+  }, [outputDetails])
   const onSelectChange = (sl) => {
     console.log("selected Option...", sl);
     setLanguage(sl);
@@ -144,6 +150,7 @@ const Landing = ({jobId}) => {
       } else {
         setProcessing(false);
         setOutputDetails(response.data);
+
         showSuccessToast(`Compiled Successfully!`);
         console.log("response.data", response.data);
         return;
